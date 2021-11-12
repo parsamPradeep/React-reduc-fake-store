@@ -12,20 +12,22 @@ const ProductDetails = (props) => {
   const { productId } = props.match.params;
   const dispatch = useDispatch();
   console.log(product);
-  const fetchProductDetails = async () => {
-    const response = await axios
-      .get(`https://fakestoreapi.com/products/${productId}`)
-      .catch((err) => {
-        console.log("Err", err);
-      });
-    dispatch(selectedProducts(response.data));
-  };
+
   useEffect(() => {
+    const fetchProductDetails = async () => {
+      const response = await axios
+        .get(`https://fakestoreapi.com/products/${productId}`)
+        .catch((err) => {
+          console.log("Err", err);
+        });
+      dispatch(selectedProducts(response.data));
+    };
     if (productId && productId !== "") fetchProductDetails();
+
     return () => {
       dispatch(removeSelectedProduct());
     };
-  }, [productId, dispatch, fetchProductDetails]);
+  }, [productId, dispatch]);
   return (
     <div className="ui grid container">
       {Object.keys(product).length === 0 ? (
@@ -36,12 +38,12 @@ const ProductDetails = (props) => {
             <div className="ui vertical divider">AND</div>
             <div className="middle aligned row">
               <div className="column lp">
-                <img className="ui fluid image" src={image} />
+                <img className="ui fluid image" src={image} alt={discription} />
               </div>
               <div className="column rp">
                 <h1>{title}</h1>
                 <h2>
-                  <a className="ui teal tag lable">${price}</a>
+                  <button className="ui teal tag lable">${price}</button>
                 </h2>
                 <h3 className="ui broen block header">{category}</h3>
                 <p>{discription}</p>
